@@ -19,7 +19,7 @@ QUOTES = [
 
 def make_bar(pct, width=20):
     filled = math.floor(pct / 100 * width)
-    return "█" * filled + "░" * (width - filled)
+    return "▓" * filled + "░" * (width - filled)
 
 def load_goals():
     try:
