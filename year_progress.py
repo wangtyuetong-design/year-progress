@@ -17,7 +17,7 @@ QUOTES = [
     "今天种下的种子，会在你看不见的地方生长。",
 ]
 
-def make_bar(pct, width=20):
+def make_bar(pct, width=12):
     filled = math.floor(pct / 100 * width)
     return "▓" * filled + "░" * (width - filled)
 
@@ -57,15 +57,18 @@ def main():
             done = g.get("done", 0)
             target = g.get("target", 1)
             name = g.get("name", "")
-            g_pct = int(done / target * 100)
-            g_bar = make_bar(g_pct, width=10)
-            goal_lines += f"\n{name}：{done}/{target}  {g_bar} {g_pct}%"
+            expected = int(target * today_pct / 100)
+            if done >= expected:
+                status = "✅达标"
+            else:
+                diff = expected - done
+                status = f"⚠️差{diff}"
+            goal_lines += f"\n{name} {done}/{target} {status}（应完成{expected}）"
 
     prefix = "🚀 通道测试！" if is_manual else "⏳"
     text = f"""{prefix} {year}年进度播报
 
-{bar} {today_pct}%
-📅 已过 {today_pct} 格，还剩 {days_left} 天{goal_lines}
+{bar} {today_pct}%  还剩{days_left}天{goal_lines}
 
 💬 {quote}"""
 
